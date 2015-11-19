@@ -1,0 +1,7 @@
+3
+>seq1
+ACGT
+>seq2
+ATTT
+>seq3
+CGTTAG
