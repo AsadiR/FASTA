@@ -27,6 +27,7 @@ public class StartClass {
         int numOfRegions = Integer.parseInt(inputSc.nextLine());
         System.out.println("Введите имя файла содержащего последовательность-запрос в формате FASTA:");
         String nameOfQueryFile = inputSc.nextLine();
+        if (nameOfQueryFile.equals("")) nameOfQueryFile = "Query.txt";
 
         Scanner querySc = new Scanner(new File(nameOfQueryFile));
         Sequence q = new Sequence(querySc);
