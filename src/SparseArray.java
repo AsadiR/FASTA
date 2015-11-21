@@ -1,8 +1,5 @@
 
-import java.util.AbstractCollection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class SparseArray<E>  implements Iterable<E> {
@@ -27,6 +24,11 @@ public class SparseArray<E>  implements Iterable<E> {
         super();
         map = new HashMap<Pair<Integer,Integer>, E>();
     }
+
+    public Collection<E> getNotNullValues() {
+        return map.values();
+    }
+
     public E get(int index1, int index2) {
         return map.get(new Pair<Integer, Integer>(index1,index2));
     }

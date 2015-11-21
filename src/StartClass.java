@@ -1,14 +1,14 @@
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class StartClass {
-    public static void main(String[] argv) throws FileNotFoundException {
+    public static void main(String[] argv) throws Exception {
+        System.out.println("Blossum matrix считана из файла matrix.txt");
         Scanner matrixSc = new Scanner(new File("matrix.txt"));
         AlignMatrix matrix = new AlignMatrix(matrixSc);
-        //System.out.println(matrix.getScore('A', '-'));
+        System.out.println("База данных с последовательностями считана из файла lib.txt");
         Scanner libSc = new Scanner(new File("lib.txt"));
         int i;
         int n = Integer.parseInt(libSc.nextLine());
@@ -16,36 +16,47 @@ public class StartClass {
         for (i=0; i<n; i++) {
             bank[i] = new Sequence(libSc);
         }
-        Library lib = new Library(matrix, 2, 1, bank);
-        Scanner querySc = new Scanner(new File("Query.txt"));
+        Library lib = new Library(matrix, bank);
+
+        Scanner inputSc = new Scanner(System.in);
+        System.out.println("Введите минимально количество совпадений в диагонали:");
+        int k = Integer.parseInt(inputSc.nextLine());
+        System.out.println("Введите ширину полосы:");
+        int w = Integer.parseInt(inputSc.nextLine());
+        System.out.println("Введите максимальное количество рассматриваемых регионов:");
+        int numOfRegions = Integer.parseInt(inputSc.nextLine());
+        System.out.println("Введите имя файла содержащего последовательность-запрос в формате FASTA:");
+        String nameOfQueryFile = inputSc.nextLine();
+
+        Scanner querySc = new Scanner(new File(nameOfQueryFile));
         Sequence q = new Sequence(querySc);
 
-        Sequence[] res = lib.fasta(q);
+
+
+        ArrayList<Sequence> res = lib.fasta(q,k,w,numOfRegions);
+
+        FileWriter writer = new FileWriter("output.txt");
+
         for (Sequence p : res) {
             System.out.println("name:" + p.name);
+            writer.write("name:"+p.name+'\n');
             System.out.println("score:" + p.score);
+            writer.write("score:" + p.score +'\n');
             System.out.println("query/libSeq");
+            writer.write("query/libSeq\n");
             System.out.println(p.query);
+            writer.write(p.query+'\n');
             System.out.println(p.value);
+            writer.write(p.value+'\n');
             System.out.println("----------");
+            writer.write("----------\n");
         }
+        System.out.println("Вывод программы сохранен в файл output.txt");
 
-/*
-        for (int j : q.findElemsMap.get('A'))
-            System.out.println(j);
-
-        Pair<Integer, Integer> p1 = new Pair<Integer, Integer>(1,2);
-        Pair<Integer, Double> p2 = new Pair<Integer, Double>(1,2d);
-        Pair<Integer, Integer> p3 = new Pair<Integer, Integer>(1,2);
-        SparseArray<Integer>  array = new SparseArray<Integer>();
-        array.set(1, 1, 2);
-        array.set(1, 3, 2);
-        //System.out.println(array.get(1,1));
-
-        for (int k : array) {
-            System.out.println(k);
-        }
-*/
+        writer.close();
+        matrixSc.close();
+        libSc.close();
+        querySc.close();
 
     }
 }
