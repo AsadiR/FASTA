@@ -5,11 +5,19 @@ import java.util.Scanner;
 
 public class StartClass {
     public static void main(String[] argv) throws Exception {
+        Scanner inputSc = new Scanner(System.in);
+
         System.out.println("Blossum matrix считана из файла matrix.txt");
         Scanner matrixSc = new Scanner(new File("matrix.txt"));
         AlignMatrix matrix = new AlignMatrix(matrixSc);
-        System.out.println("База данных с последовательностями считана из файла lib.txt");
-        Scanner libSc = new Scanner(new File("lib2.txt"));
+
+
+        System.out.println("Введите имя файла содержащего базу данных:");
+        String nameOfLibFile = inputSc.nextLine();
+        if (nameOfLibFile.equals("")) nameOfLibFile = "lib2.txt";
+        Scanner libSc = new Scanner(new File(nameOfLibFile));
+
+
         int i;
         int n = Integer.parseInt(libSc.nextLine());
         Sequence[] bank = new Sequence[n];
@@ -18,7 +26,7 @@ public class StartClass {
         }
         Library lib = new Library(matrix, bank);
 
-        Scanner inputSc = new Scanner(System.in);
+
         System.out.println("Введите минимально количество совпадений в диагонали:");
         int k = Integer.parseInt(inputSc.nextLine());
         System.out.println("Введите ширину полосы:");

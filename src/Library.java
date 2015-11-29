@@ -22,6 +22,7 @@ public class Library {
         for (int i=0; i<bank.length; i++) {
             Sequence s = findAligning(bank[i], query, k, w, numOfReg);
             System.out.println("Seq has been proceeded:"+s.name);
+            System.out.println( 100*(1d-(double)i/bank.length) + "% remaining" );
             if (s.score!=0) res.add(s);
         }
         Collections.sort(res, Collections.reverseOrder());
@@ -83,6 +84,7 @@ public class Library {
                     r.score = regionScore;
                     //System.out.println("old:" + r);
 
+                    //расширяем регионы в длину, но не заполняем содержимое расширенных частей
                     regionLengthExpand(r, n, m, seq, query);
 
                     regions.add(r);
@@ -90,17 +92,16 @@ public class Library {
                     for (DotPlotElem e = d; e != null; e = sa.get(e.i + 1, e.j + 1))
                         e.mark = DotPlotElem.BADREGION;
                 }
-
-
             }
         }
+
 
         Collections.sort(regions, Collections.reverseOrder());
         int i=0;
         //отбираю numOfReg наиболее скорных регионов и выполняю расширение
         for (Region r : regions) {
             if (i<numOfReg) {
-                //заполняем расширенный регион в разряженном массиве
+                //заполняем расширенныес помощью LengthExpand части регионов
                 for (j = 0; j < r.length(); j++) {
                     if (sa.get(r.beginI + j, r.beginJ + j) == null) {
                         DotPlotElem elem = new DotPlotElem(r.beginI + j, r.beginJ + j);
@@ -255,6 +256,43 @@ public class Library {
 
     private void regionWidthExpand(final Region r, int n, int m, int w, SparseArray<DotPlotElem> sa) {
         int i,j,t;
+
+        for (int k=0; k<=w; k++) {
+            int pI = r.beginI - w + k;
+            int pJ = r.beginJ - w;
+            for (t=0; t<r.length() + 2*w; t++) {
+                i=pI+t;
+                j=pJ+t;
+                //проверка выхода за границу массива
+                if (j<0 || j>=m) continue;
+                if (i<0 || i>=n) continue;
+                if (sa.get(i,j)==null) {
+                    DotPlotElem elem = new DotPlotElem(i,j);
+                    elem.mark = DotPlotElem.WIDTH_EXTENSION;
+                    sa.set(i,j,elem);
+                }
+            }
+        }
+
+        for (int k=1; k<=w; k++) {
+            int pI = r.beginI - w;
+            int pJ = r.beginJ - w + k;
+            for (t=0; t<r.length() + 2*w; t++) {
+                i=pI+t;
+                j=pJ+t;
+                //проверка выхода за границу массива
+                if (j<0 || j>=m) continue;
+                if (i<0 || i>=n) continue;
+                if (sa.get(i,j)==null) {
+                    DotPlotElem elem = new DotPlotElem(i,j);
+                    elem.mark = DotPlotElem.WIDTH_EXTENSION;
+                    sa.set(i,j,elem);
+                }
+            }
+        }
+
+
+/*
         for (t=0; t<=r.length(); t++) {
             int pI = r.beginI+t-w;
             int pJ = r.beginJ+t-w;
@@ -270,6 +308,6 @@ public class Library {
                 }
             }
 
-        }
+        }*/
     }
 }
