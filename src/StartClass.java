@@ -9,7 +9,7 @@ public class StartClass {
         Scanner matrixSc = new Scanner(new File("matrix.txt"));
         AlignMatrix matrix = new AlignMatrix(matrixSc);
         System.out.println("База данных с последовательностями считана из файла lib.txt");
-        Scanner libSc = new Scanner(new File("lib.txt"));
+        Scanner libSc = new Scanner(new File("lib2.txt"));
         int i;
         int n = Integer.parseInt(libSc.nextLine());
         Sequence[] bank = new Sequence[n];
@@ -51,6 +51,7 @@ public class StartClass {
             writer.write(p.value+'\n');
             System.out.println("----------");
             writer.write("----------\n");
+            writer.flush();
         }
         System.out.println("Вывод программы сохранен в файл output.txt");
 

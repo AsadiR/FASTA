@@ -21,6 +21,7 @@ public class Library {
         ArrayList<Sequence> res = new ArrayList<Sequence>();
         for (int i=0; i<bank.length; i++) {
             Sequence s = findAligning(bank[i], query, k, w, numOfReg);
+            System.out.println("Seq has been proceeded:"+s.name);
             if (s.score!=0) res.add(s);
         }
         Collections.sort(res, Collections.reverseOrder());
