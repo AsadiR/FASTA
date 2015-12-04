@@ -1,8 +1,5 @@
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 public class Library {
     private AlignMatrix matrix;
@@ -55,7 +52,7 @@ public class Library {
         arrValues = values.toArray(arrValues);
         Arrays.sort(arrValues);
 
-        ArrayList<Region> regions = new ArrayList<Region>();
+        TreeSet<Region> regions = new TreeSet<Region>();
 
 
         // проверка условия d.length >= k
@@ -96,7 +93,7 @@ public class Library {
         }
 
 
-        Collections.sort(regions, Collections.reverseOrder());
+        //Collections.sort(regions, Collections.reverseOrder());
         int i=0;
         //отбираю numOfReg наиболее скорных регионов и выполняю расширение
         for (Region r : regions) {

@@ -24,12 +24,21 @@ public class Region implements Comparable<Region> {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof  Region) {
+            Region r = (Region)obj;
+            return beginI==r.beginI && endI==r.endI;
+        }
+        return false;
+    }
+
+    @Override
     public int compareTo(@NotNull Region  o) {
         if (score>o.score)
-            return 1;
+            return -1;
         else if (score==o.score)
             return  0;
         else
-            return -1;
+            return 1;
     }
 }
